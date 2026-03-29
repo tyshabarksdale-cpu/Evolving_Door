@@ -6,24 +6,31 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
 import { z } from 'zod';
+import { submitContactForm } from '@/app/actions/submit-contact-form';
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters.'),
   email: z.string().email('Please enter a valid email address.'),
+  phoneNumber: z.string().min(10, 'Phone number must be at least 10 digits.'),
+  preferredContactMethod: z.string().min(1, 'Please select a preferred contact method.'),
   message: z.string().min(10, 'Message must be at least 10 characters.'),
 });
 
 type FormErrors = {
   name?: string[];
   email?: string[];
+  phoneNumber?: string[];
+  preferredContactMethod?: string[];
   message?: string[];
 } | null;
 
 export function ContactForm() {
   const [pending, setPending] = useState(false);
   const [errors, setErrors] = useState<FormErrors>(null);
+  const [preferredContactMethod, setPreferredContactMethod] = useState('');
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -36,6 +43,8 @@ export function ContactForm() {
     const validatedFields = contactSchema.safeParse({
       name: formData.get('name'),
       email: formData.get('email'),
+      phoneNumber: formData.get('phoneNumber'),
+      preferredContactMethod: preferredContactMethod,
       message: formData.get('message'),
     });
 
@@ -46,23 +55,34 @@ export function ContactForm() {
     }
 
     try {
-      const { name, email, message } = validatedFields.data;
-      console.log('New contact form submission:', { name, email, message });
+      const { name, email, phoneNumber, preferredContactMethod, message } = validatedFields.data;
 
-      toast({
-        title: 'Success!',
-        description: 'Thank you for your message! I will get back to you soon.',
-      });
-      
-      formRef.current?.reset();
+      // Call Server Action
+      const result = await submitContactForm({ name, email, phoneNumber, preferredContactMethod, message });
+
+      if (result.success) {
+        toast({
+          title: 'Success!',
+          description: result.message,
+        });
+        formRef.current?.reset();
+        setPreferredContactMethod('');
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: result.message,
+        });
+      }
     } catch (error) {
+      console.error('Form submission error:', error);
       toast({
         variant: 'destructive',
         title: 'Error',
         description: 'An unexpected error occurred. Please try again.',
       });
     }
-    
+
     setPending(false);
   };
 
@@ -88,6 +108,39 @@ export function ContactForm() {
          {errors?.email && (
           <p className="text-sm font-medium text-destructive">
             {errors.email[0]}
+          </p>
+        )}
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="phoneNumber">Phone Number</Label>
+        <Input
+          id="phoneNumber"
+          name="phoneNumber"
+          type="tel"
+          placeholder="(123) 456-7890"
+        />
+         {errors?.phoneNumber && (
+          <p className="text-sm font-medium text-destructive">
+            {errors.phoneNumber[0]}
+          </p>
+        )}
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="preferredContactMethod">Preferred Contact Method</Label>
+        <Select name="preferredContactMethod" value={preferredContactMethod} onValueChange={setPreferredContactMethod}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select your preference" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Email">Email</SelectItem>
+            <SelectItem value="Phone">Phone</SelectItem>
+            <SelectItem value="Text">Text</SelectItem>
+            <SelectItem value="No Preference">No Preference</SelectItem>
+          </SelectContent>
+        </Select>
+         {errors?.preferredContactMethod && (
+          <p className="text-sm font-medium text-destructive">
+            {errors.preferredContactMethod[0]}
           </p>
         )}
       </div>

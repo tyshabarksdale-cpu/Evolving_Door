@@ -76,7 +76,7 @@ export function Footer() {
         <div className="mt-8 pt-8 border-t text-center text-sm text-muted-foreground space-y-2">
           <p>&copy; {currentYear} Taylor Your Leadership Coaching. All Rights Reserved.</p>
           <p>
-            Designed by <a href="https://www.llssolutions.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary underline">Live Life Successful Solutions</a> Courtesy of <a href="https://www.nexark.ai" target="_blank" rel="noopener noreferrer" className="hover:text-primary underline">Nexark</a>
+            Designed and Powered by <a href="https://www.nexark.ai" target="_blank" rel="noopener noreferrer" className="hover:text-primary underline">Nexark</a>
           </p>
         </div>
       </div>

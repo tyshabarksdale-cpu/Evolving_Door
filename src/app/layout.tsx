@@ -4,6 +4,7 @@ import { EB_Garamond, PT_Sans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
+import { Analytics } from "@vercel/analytics/next"
 
 const ptSans = PT_Sans({
   subsets: ['latin'],
@@ -31,6 +32,18 @@ export const metadata: Metadata = {
     shortcut: [{ url: faviconUrl }],
     apple: [{ url: faviconUrl }],
   },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'Taylor Your Leadership Coaching',
+    title: 'Taylor Your Leadership Coaching',
+    description: 'Guiding you through life\'s transitions with professional coaching and support.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Taylor Your Leadership Coaching',
+    description: 'Guiding you through life\'s transitions with professional coaching and support.',
+  },
 };
 
 export default function RootLayout({
@@ -43,6 +56,7 @@ export default function RootLayout({
       <body className={cn("min-h-screen bg-background font-body antialiased", ptSans.variable, ebGaramond.variable)}>
         {children}
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );

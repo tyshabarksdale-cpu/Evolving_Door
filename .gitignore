@@ -43,3 +43,15 @@ next-env.d.ts
 # firebase
 firebase-debug.log
 firestore-debug.log
+
+# DOE Framework (Directives, Orchestration, Execution)
+# These folders contain AI orchestration logic and should not be committed
+/directives/
+/execution/
+/.tmp/
+credentials.json
+token.json
+
+# Content folder (videos and other large media files)
+/content/
+public/videos/*.mov

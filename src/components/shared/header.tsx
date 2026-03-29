@@ -76,7 +76,7 @@ export function Header() {
                 ))}
             </nav>
             <Button asChild className="rounded-full" size="lg">
-                <a href="https://calendly.com/" target="_blank" rel="noopener noreferrer">Let's Talk</a>
+                <a href="https://cal.com/janice-brown-taylor-x55xle/30min" target="_blank" rel="noopener noreferrer">Let's Talk</a>
             </Button>
         </div>
 
@@ -114,7 +114,7 @@ export function Header() {
 
                 <div className="p-4 pb-8 border-t">
                   <Button asChild className="w-full rounded-full" size="lg">
-                      <a href="https://calendly.com/" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>Let's Talk</a>
+                      <a href="https://cal.com/janice-brown-taylor-x55xle/30min" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>Let's Talk</a>
                   </Button>
                 </div>
             </DialogContent>
